@@ -28,12 +28,14 @@ AddEventHandler('GTA:ShowMineurBlip', function(bool)
 	end
 end)
 
---> AFFICHER VOS BLIPS AU SPAWN : 
-local firstspawn = 0
-AddEventHandler('playerSpawned', function(spawn)
-	if firstspawn == 0 then
-		TriggerEvent("GTA:ShowMineurBlip",true)
-		TriggerServerEvent("GTA:GetPlayerJob")
-        firstspawn = 1
+
+Citizen.CreateThread(function()
+    while true do
+		Citizen.Wait(0)
+		if config.Job == "Mineur" then
+			TriggerEvent("GTA:ShowMineurBlip",true)
+		else
+			TriggerEvent("GTA:ShowMineurBlip",false)
+		end
     end
 end)

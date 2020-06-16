@@ -1,12 +1,10 @@
 fx_version 'bodacious'
 game 'gta5'
 
-
-resource_version '1.0'
-
 dependency 'nMenuPersonnel'
 
 server_scripts {
+    'server_main/server.lua',
     'mineur/mineur_server.lua'
 } 
 

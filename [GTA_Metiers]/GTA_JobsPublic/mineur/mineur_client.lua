@@ -88,7 +88,20 @@ end)
 RegisterNetEvent("GTA:isPlayerMineurOnService")
 AddEventHandler("GTA:isPlayerMineurOnService", function ()
     if config.enService == false then
-        SetPedComponentVariation(LocalPed(), 8, 59, 0, 0) --> Tenue Mineur
+        local homme = GetHashKey("mp_m_freemode_01")
+        if(GetEntityModel(GetPlayerPed(-1)) == homme) then
+            SetPedComponentVariation(LocalPed(), 11, 5, 0, 2)  -- Top
+            SetPedComponentVariation(LocalPed(), 8, 59, 0, 2)   -- teeshirt
+            SetPedComponentVariation(LocalPed(), 6, 25, 0, 2)   -- Chaussure
+            SetPedComponentVariation(LocalPed(), 4, 0, 12, 2)   -- Pantalon
+            SetPedComponentVariation(LocalPed(), 3, 34, 0, 2)   -- torsos
+        else
+            SetPedComponentVariation(GetPlayerPed(-1), 11, 11, 2, 2)  -- Top
+            SetPedComponentVariation(GetPlayerPed(-1), 8, 36, 0, 2)   -- teeshirt
+			SetPedComponentVariation(GetPlayerPed(-1), 6, 26, 0, 2)   -- Chaussure
+			SetPedComponentVariation(GetPlayerPed(-1), 4, 35, 0, 2)   -- Pantalon
+			SetPedComponentVariation(GetPlayerPed(-1), 3, 11, 0, 2)   -- torsos
+        end
         TriggerEvent("GTA:ShowMineurBlipPoint")
     else
         TriggerServerEvent("GTA:LoadVetement")

@@ -1,5 +1,6 @@
 --||@SuperCoolNinja.||--
 
+local firstspawn = 0
 -- Blips Mineur : 
 RegisterNetEvent("GTA:ShowMineurBlip")
 AddEventHandler('GTA:ShowMineurBlip', function(bool)
@@ -28,10 +29,17 @@ AddEventHandler('GTA:ShowMineurBlip', function(bool)
 	end
 end)
 
+AddEventHandler('playerSpawned', function(spawn)
+	if firstspawn == 0 then
+		TriggerServerEvent("GTA:LoadJobsJoueur")
+		firstspawn = 1
+	end
+end)
 
 Citizen.CreateThread(function()
     while true do
 		Citizen.Wait(0)
+
 		if config.Job == "Mineur" then
 			TriggerEvent("GTA:ShowMineurBlip",true)
 		else

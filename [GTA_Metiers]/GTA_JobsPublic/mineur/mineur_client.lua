@@ -258,17 +258,17 @@ Citizen.CreateThread(function()
                     --Recolte Process:
                     if (config.recolteEnCours == true) then
                         if (config.joueurProcheRecolte == true) then
-                            if (exports.nMenuPersonnel:getQuantity(11) >= 31) then
+                            if (exports.nMenuPersonnel:getQuantity(13) >= 31) then
                                 DrawMissionText("~h~~r~Inventaire Complet", 10000)
                                 config.recolteEnCours = false
                             else
-                                while (exports.nMenuPersonnel:getQuantity(11) < 31) and (config.recolteEnCours == true) and (config.joueurProcheRecolte == true) do
+                                while (exports.nMenuPersonnel:getQuantity(13) < 31) and (config.recolteEnCours == true) and (config.joueurProcheRecolte == true) do
                                 DrawMissionText("~h~~b~Récolte~w~ en cours...", 3000)
                                 Wait(3000)
                                 DrawMissionText("~h~~g~+1~w~ Cuivre...", 1000)
-                                TriggerEvent("player:receiveItem", 11, 1)
+                                TriggerEvent("player:receiveItem", 13, 1)
                                 Wait(1000)
-                                CheckItemNumber(11)
+                                CheckItemNumber(13)
                                 Wait(1)
                                 end
                             end
@@ -280,19 +280,19 @@ Citizen.CreateThread(function()
                     --Traitement Process:
                     if (config.traitementEnCours == true) then
                         if (config.joueurProcheTraitement == true) then
-                            if (exports.nMenuPersonnel:getQuantity(11) <= 0) then
+                            if (exports.nMenuPersonnel:getQuantity(13) <= 0) then
                                 DrawMissionText("~h~~g~Traitement terminé", 10000)
                                 config.traitementEnCours = false
                             else
-                                while (exports.nMenuPersonnel:getQuantity(11) > 0) and (config.traitementEnCours == true) and (config.joueurProcheTraitement == true) do
+                                while (exports.nMenuPersonnel:getQuantity(13) > 0) and (config.traitementEnCours == true) and (config.joueurProcheTraitement == true) do
                                 DrawMissionText("~h~~b~Traitement~w~ en cours...", 3000)
                                 Wait(3000)
                                 DrawMissionText("~h~~g~+1~w~ Fil de Cuivre...", 1000)
-                                TriggerEvent('player:looseItem', 11, 1)
-                                TriggerEvent("player:receiveItem", 12, 1)
+                                TriggerEvent('player:looseItem', 13, 1)
+                                TriggerEvent("player:receiveItem", 14, 1)
                                 Wait(1000)
-                                CheckItemNumber(11)
-                                CheckItemNumber(12)
+                                CheckItemNumber(13)
+                                CheckItemNumber(14)
                                 Wait(1)
                                 end
                             end
@@ -304,18 +304,18 @@ Citizen.CreateThread(function()
                     --Revente Process:
                     if (config.reventeEnCours == true) then
                         if (config.joueurProcheRevente == true) then
-                            if(exports.nMenuPersonnel:getQuantity(12) <= 0) then
+                            if(exports.nMenuPersonnel:getQuantity(14) <= 0) then
                                 DrawMissionText("~h~~g~Revente terminé", 10000)
                                 config.reventeEnCours = false
                             else
-                                while (exports.nMenuPersonnel:getQuantity(12) > 0) and (config.reventeEnCours == true) and (config.joueurProcheRevente == true) do
+                                while (exports.nMenuPersonnel:getQuantity(14) > 0) and (config.reventeEnCours == true) and (config.joueurProcheRevente == true) do
                                 DrawMissionText("~h~~b~Revente~w~ en cours...", 3000)
                                 Wait(3000)
                                 DrawMissionText("~h~Vous avez vendu ~g~+1 fil de Cuivre~w~...", 1000)
-                                TriggerEvent('player:looseItem', 12, 1)
+                                TriggerEvent('player:looseItem', 14, 1)
                                 TriggerServerEvent("GTA:RecevoirPayeMineur", tonumber(payeTotaleMineur))
                                 Wait(1000)
-                                CheckItemNumber(12)
+                                CheckItemNumber(14)
                                 Wait(1)
                                 end
                             end

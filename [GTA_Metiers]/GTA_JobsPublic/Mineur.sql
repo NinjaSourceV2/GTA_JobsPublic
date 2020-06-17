@@ -1,6 +1,6 @@
 INSERT INTO `items` (`id`, `libelle`, `isUsable`, `type`) VALUES
-	(11, 'Cuivre', 1, 3),
-	(12, 'Fil de Cuivre', 1, 3);
+	(13, 'Cuivre', 1, 3),
+	(14, 'Fil de Cuivre', 1, 3);
 
 
 INSERT INTO `gta_metiers` (`metiers`, `salaire`, `emploi`) VALUES

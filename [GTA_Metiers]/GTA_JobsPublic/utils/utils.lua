@@ -2,8 +2,9 @@ ITEMS = {}
 
 --> Event :
 RegisterNetEvent("GTA:LoadClientJob")
-AddEventHandler("GTA:LoadClientJob", function(newJobName)
+AddEventHandler("GTA:LoadClientJob", function(newJobName, newService)
 	config.Job = newJobName
+	config.Service = newService
 end)
 
 RegisterNetEvent("gui:getItems")
@@ -20,7 +21,6 @@ function CheckItemNumber(item)
 		end
 	return itemamount
 end
-
 
 Ninja_Core__DisplayHelpAlert = function(msg)
 	BeginTextCommandDisplayHelp("STRING");  

@@ -5,6 +5,33 @@ local maxCuivreSlot = 31 --> Nombre maximum qu'il peut contenir dans son inventa
 local payeTotaleMineur = 2500 --> A changer ici la paye. (Je l'ai fait de manniere vraiment basic)
 
 
+RegisterNetEvent("GTA:ShowMineurBlip")
+AddEventHandler('GTA:ShowMineurBlip', function(bool)
+	if bool and #config.BlipsMineur  == 0 then
+		for station,pos in pairs(PositionMineur) do
+			local loc = pos
+			pos = pos.Vestiaire
+			local blip = AddBlipForCoord(pos[1],pos[2],pos[3])
+			SetBlipSprite(blip,78)
+			SetBlipColour(blip, 16)
+			BeginTextCommandSetBlipName("STRING")
+			AddTextComponentString('Mineur')
+			EndTextCommandSetBlipName(blip)
+			SetBlipAsShortRange(blip,true)
+			SetBlipAsMissionCreatorBlip(blip,true)
+			table.insert(config.BlipsMineur, {blip = blip, pos = loc})
+		end
+	elseif bool == false and #config.BlipsMineur > 0 then
+		for _,v in ipairs(config.BlipsMineur) do
+			if DoesBlipExist(v.blip) then
+				SetBlipAsMissionCreatorBlip(v.blip,false)
+				Citizen.InvokeNative(0x86A652570E5F25DD, Citizen.PointerValueIntInitialized(v.blip))
+			end
+		end
+		config.BlipsMineur = {}
+	end
+end)
+
 RegisterNetEvent("GTA:ShowMineurBlipPoint")
 AddEventHandler('GTA:ShowMineurBlipPoint', function ()
     --Vestiaire :
@@ -51,7 +78,6 @@ end)
 
 RegisterNetEvent("GTA:RemoveBlipPoint")
 AddEventHandler("GTA:RemoveBlipPoint", function ()
-
     --On retire le blip vestiaire si la personne n'est plus mineur :
     if MineurVestiaire ~= nil and DoesBlipExist(MineurVestiaire) then
         Citizen.InvokeNative(0x86A652570E5F25DD,Citizen.PointerValueIntInitialized(MineurVestiaire))
@@ -87,7 +113,7 @@ end)
 
 RegisterNetEvent("GTA:isPlayerMineurOnService")
 AddEventHandler("GTA:isPlayerMineurOnService", function ()
-    if config.enService == false then
+    if config.Service == false then
         local homme = GetHashKey("mp_m_freemode_01")
         if(GetEntityModel(GetPlayerPed(-1)) == homme) then
             SetPedComponentVariation(LocalPed(), 11, 5, 0, 2)  -- Top
@@ -103,13 +129,34 @@ AddEventHandler("GTA:isPlayerMineurOnService", function ()
 			SetPedComponentVariation(GetPlayerPed(-1), 3, 11, 0, 2)   -- torsos
         end
         TriggerEvent("GTA:ShowMineurBlipPoint")
+        TriggerServerEvent("GTA:UpdateServiceOn")
     else
+        TriggerServerEvent("GTA:UpdateServiceOff")
         TriggerServerEvent("GTA:LoadVetement")
         TriggerEvent("GTA:RemoveBlipPoint")
     end
         
-    config.enService = not config.enService
+    config.Service = not config.Service
 end)
+
+RegisterNetEvent("GTA:TenueMineur")
+AddEventHandler("GTA:TenueMineur", function ()
+    local homme = GetHashKey("mp_m_freemode_01")
+    if(GetEntityModel(GetPlayerPed(-1)) == homme) then
+        SetPedComponentVariation(LocalPed(), 11, 5, 0, 2)  -- Top
+        SetPedComponentVariation(LocalPed(), 8, 59, 0, 2)   -- teeshirt
+        SetPedComponentVariation(LocalPed(), 6, 25, 0, 2)   -- Chaussure
+        SetPedComponentVariation(LocalPed(), 4, 0, 12, 2)   -- Pantalon
+        SetPedComponentVariation(LocalPed(), 3, 34, 0, 2)   -- torsos
+    else
+        SetPedComponentVariation(GetPlayerPed(-1), 11, 11, 2, 2)  -- Top
+        SetPedComponentVariation(GetPlayerPed(-1), 8, 36, 0, 2)   -- teeshirt
+        SetPedComponentVariation(GetPlayerPed(-1), 6, 26, 0, 2)   -- Chaussure
+        SetPedComponentVariation(GetPlayerPed(-1), 4, 35, 0, 2)   -- Pantalon
+        SetPedComponentVariation(GetPlayerPed(-1), 3, 11, 0, 2)   -- torsos
+    end
+end)
+
 
 
 RegisterNetEvent("GTA:isVehMineurOut")
@@ -138,7 +185,6 @@ AddEventHandler("GTA:isVehMineurOut", function ()
 end)
 
 
-
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
@@ -146,7 +192,7 @@ Citizen.CreateThread(function()
             if (config.Job == "Mineur") then
                 --Prise de Service :
                 if GetDistanceBetweenCoords(pos.Vestiaire[1],pos.Vestiaire[2],pos.Vestiaire[3],GetEntityCoords(LocalPed()),true) < 5 then
-                    if config.enService == true then
+                    if config.Service == true then
                         if GetLastInputMethod(0) then
                             Ninja_Core__DisplayHelpAlert("Appuyez sur ~INPUT_CONTEXT~ pour ~r~finir~w~ votre ~b~service~w~.")
                         else
@@ -165,7 +211,7 @@ Citizen.CreateThread(function()
                     end
                 end
                 
-                if config.enService == true then
+                if config.Service == true then
                     --Sortie de camion :
                     if GetDistanceBetweenCoords(pos.SpawnCamion[1],pos.SpawnCamion[2],pos.SpawnCamion[3],GetEntityCoords(LocalPed()),true) < 5 then
                         if config.VehiculeSortie == false then
@@ -330,11 +376,10 @@ Citizen.CreateThread(function()
 end)
 
 
-
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        if config.enService == true then
+        if config.Service == true then
             --Recolte :
             if (IsControlJustReleased(0, 54) or IsControlJustReleased(0, 175)) and (config.joueurProcheRecolte == true) and (config.recolteEnCours == false) then
                 if IsPedInAnyVehicle(LocalPed(), true) == false then
@@ -352,7 +397,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        if config.enService == true then
+        if config.Service == true then
             --Traitement :
             if (IsControlJustReleased(0, 54) or IsControlJustReleased(0, 175)) and (config.joueurProcheTraitement == true) and (config.traitementEnCours == false) then
                 if IsPedInAnyVehicle(LocalPed(), true) == false then
@@ -370,7 +415,7 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        if config.enService == true then
+        if config.Service == true then
             --Revente :
             if (IsControlJustReleased(0, 54) or IsControlJustReleased(0, 175)) and (config.joueurProcheRevente == true) and (config.reventeEnCours == false) then
                 if IsPedInAnyVehicle(LocalPed(), true) == false then

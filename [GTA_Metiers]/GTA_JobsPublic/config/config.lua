@@ -1,8 +1,8 @@
 config = {}
 
 config.Job = "Chômeur"
+config.Service = false
 config.VehiculeSortie = false
-config.enService = false
 
 --> Status Proccessus farm :
 config.recolteEnCours = false

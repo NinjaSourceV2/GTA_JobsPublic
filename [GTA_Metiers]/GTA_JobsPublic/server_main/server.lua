@@ -1,5 +1,5 @@
 --> Version de la Resource : 
-local LatestVersion = ''; CurrentVersion = '1.4'
+local LatestVersion = ''; CurrentVersion = '1.5'
 PerformHttpRequest('https://raw.githubusercontent.com/NinjaSourceV2/GTA_JobsPublic/master/%5BGTA_Metiers%5D/GTA_JobsPublic/VERSION', function(Error, NewestVersion, Header)
     LatestVersion = NewestVersion
     if CurrentVersion ~= NewestVersion then

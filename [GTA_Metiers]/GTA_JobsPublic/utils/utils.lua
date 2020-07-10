@@ -22,6 +22,13 @@ function CheckItemNumber(item)
 	return itemamount
 end
 
+--> No need native to check the distance with this :
+square = math.sqrt
+function getDistance(a, b) 
+  local x, y, z = a.x-b.x, a.y-b.y, a.z-b.z
+  return square(x*x+y*y+z*z)
+end
+
 Ninja_Core__DisplayHelpAlert = function(msg)
 	BeginTextCommandDisplayHelp("STRING");  
     AddTextComponentSubstringPlayerName(msg);  

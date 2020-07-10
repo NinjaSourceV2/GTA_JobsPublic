@@ -8,7 +8,6 @@ AddEventHandler('playerSpawned', function(spawn)
 	
 	if config.Job == "Mineur" then 
 		TriggerEvent("GTA:ShowMineurBlip", true)
-		TriggerEvent("GTA:TenueMineur", true)
 	else
 		TriggerEvent("GTA:ShowMineurBlip", false)
 	end
